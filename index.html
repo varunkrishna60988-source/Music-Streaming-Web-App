@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify - Web Player: Music for everyone</title>
+    <!-- Favicon link (Spotify icon) -->
+    <link rel="icon" type="image/png" href="https://www.scdn.co/lyric-apps/images/favicon.png">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="spotify-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <a href="#" id="sidebar-logo">
+                    <i class="fa-brands fa-spotify"></i>
+                    <span>Spotify</span>
+                </a>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="#" class="nav-item active" id="nav-home">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-library">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Your Library</span>
+                </a>
+            </nav>
+            
+            <div class="library-box">
+                <div class="box-header">
+                    <span class="box-title"><i class="fa-solid fa-plus"></i> Create Playlist</span>
+                    <button class="add-playlist-btn" id="create-playlist-btn" title="Create Playlist">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <div class="playlists-container" id="playlists-list">
+                    <a href="#" class="playlist-item active-playlist" id="playlist-liked">
+                        <div class="liked-icon-box">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="playlist-info">
+                            <span class="playlist-name">Liked Songs</span>
+                            <span class="playlist-meta">Playlist • <span id="liked-songs-count">0</span> songs</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Visualizer Card in Sidebar -->
+            <div class="visualizer-sidebar-card">
+                <div class="card-header">
+                    <span>Now Playing Visualizer</span>
+                    <span class="pulse-dot"></span>
+                </div>
+                <div class="mini-visualizer-container">
+                    <canvas id="mini-visualizer"></canvas>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            
+            <!-- HEADER -->
+            <header class="main-header" id="main-header">
+                <div class="header-left">
+                    <button class="nav-arrow-btn" id="nav-back-btn" title="Go back">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button class="nav-arrow-btn" id="nav-forward-btn" title="Go forward">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                    
+                    <div class="search-bar-container hidden" id="header-search-bar">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" placeholder="What do you want to play?" id="search-input">
+                        <button class="clear-search-btn" id="clear-search" title="Clear search">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <button class="btn btn-transparent hide-mobile">Premium</button>
+                    <button class="btn btn-transparent hide-mobile">Support</button>
+                    <button class="btn btn-white hide-mobile">Download</button>
+                    <div class="vertical-divider hide-mobile"></div>
+                    <div class="user-profile-dropdown" id="profile-dropdown">
+                        <button class="profile-btn">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=60" alt="User profile" class="profile-img">
+                            <span class="profile-name">Guest User</span>
+                            <i class="fa-solid fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-menu" id="profile-menu">
+                            <a href="#"><i class="fa-solid fa-user"></i> Account</a>
+                            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" id="btn-theme-toggle"><i class="fa-solid fa-circle-half-stroke"></i> Toggle Theme</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DYNAMIC VIEWS -->
+            <div class="view-container">
+                
+                <!-- HOME VIEW -->
+                <section class="content-view" id="view-home">
+                    <div class="welcome-section">
+                        <h1 id="welcome-greeting">Good day</h1>
+                        
+                        <!-- Recent grid -->
+                        <div class="recent-grid" id="recent-tracks-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Made For You Section -->
+                    <div class="section-container">
+                        <div class="section-header">
+                            <h2>Made For You</h2>
+                            <a href="#" class="see-all">See all</a>
+                        </div>
+                        <div class="cards-grid" id="songs-cards-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- All Songs List Table -->
+                    <div class="section-container">
+                        <div class="section-header">
+                            <h2>Featured Songs</h2>
+                        </div>
+                        <div class="tracklist-container">
+                            <div class="tracklist-header">
+                                <div class="col-num">#</div>
+                                <div class="col-title">Title</div>
+                                <div class="col-album hide-mobile">Album</div>
+                                <div class="col-date hide-tablet">Release Date</div>
+                                <div class="col-like"></div>
+                                <div class="col-duration"><i class="fa-regular fa-clock"></i></div>
+                            </div>
+                            <div class="tracklist-rows" id="home-tracklist-rows">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEARCH VIEW -->
+                <section class="content-view hidden" id="view-search">
+                    <div class="search-view-initial" id="search-initial-content">
+                        <h2>Browse all</h2>
+                        <div class="search-genres-grid">
+                            <div class="genre-card" style="--bg-color: #E1306C;">
+                                <h3>Podcasts</h3>
+                                <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=200&auto=format&fit=crop&q=60" alt="Podcasts">
+                            </div>
+                            <div class="genre-card" style="--bg-color: #1E3264;">
+                                <h3>Made For You</h3>
+                                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&auto=format&fit=crop&q=60" alt="Made For You">
+                            </div>
+                            <div class="genre-card" style="--bg-color: #F037A5;">
+                                <h3>New Releases</h3>
+                                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&auto=format&fit=crop&q=60" alt="New Releases">
+                            </div>
+                            <div class="genre-card" style="--bg-color: #E8115B;">
+                                <h3>Pop</h3>
+                                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&auto=format&fit=crop&q=60" alt="Pop">
+                            </div>
+                            <div class="genre-card" style="--bg-color: #BC4639;">
+                                <h3>Hip-Hop</h3>
+                                <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&auto=format&fit=crop&q=60" alt="Hip-Hop">
+                            </div>
+                            <div class="genre-card" style="--bg-color: #2D963F;">
+                                <h3>Rock</h3>
+                                <img src="https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=200&auto=format&fit=crop&q=60" alt="Rock">
+                            </div>
+                            <div class="genre-card" style="--bg-color: #7D4B32;">
+                                <h3>Lo-Fi</h3>
+                                <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=200&auto=format&fit=crop&q=60" alt="Lo-Fi">
+                            </div>
+                            <div class="genre-card" style="--bg-color: #A0C3D2;">
+                                <h3>Jazz</h3>
+                                <img src="https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=200&auto=format&fit=crop&q=60" alt="Jazz">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-view-results hidden" id="search-results-content">
+                        <div class="results-layout">
+                            <div class="top-result-panel">
+                                <h2>Top result</h2>
+                                <div class="top-result-card" id="top-search-result">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+                            <div class="songs-result-panel">
+                                <h2>Songs</h2>
+                                <div class="results-list" id="search-songs-results">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- LIKED SONGS VIEW -->
+                <section class="content-view hidden" id="view-liked">
+                    <div class="liked-songs-hero">
+                        <div class="hero-bg-gradient"></div>
+                        <div class="hero-content">
+                            <div class="liked-hero-img-box">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+                            <div class="liked-hero-details">
+                                <span class="playlist-tag">Playlist</span>
+                                <h1>Liked Songs</h1>
+                                <div class="hero-user-info">
+                                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=60" alt="User profile" class="hero-user-img">
+                                    <span class="hero-user-name">Guest User</span>
+                                    <span class="bullet">•</span>
+                                    <span class="hero-songs-count" id="liked-hero-count">0 songs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="liked-songs-controls">
+                        <button class="play-btn-large" id="play-liked-playlist" title="Play Liked Songs">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="tracklist-container">
+                        <div class="tracklist-header">
+                            <div class="col-num">#</div>
+                            <div class="col-title">Title</div>
+                            <div class="col-album hide-mobile">Album</div>
+                            <div class="col-date hide-tablet">Date Liked</div>
+                            <div class="col-like"></div>
+                            <div class="col-duration"><i class="fa-regular fa-clock"></i></div>
+                        </div>
+                        <div class="tracklist-rows" id="liked-tracklist-rows">
+                            <!-- Populated by JS when songs are liked -->
+                            <div class="no-songs-placeholder">
+                                <i class="fa-regular fa-heart"></i>
+                                <h3>Songs you like will appear here</h3>
+                                <p>Save songs by clicking the heart icon.</p>
+                                <button class="btn btn-white" id="find-songs-btn">Find songs</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- NOW PLAYING VISUALIZER VIEW (EXPANDED) -->
+                <section class="content-view hidden" id="view-visualizer">
+                    <div class="visualizer-container-expanded">
+                        <div class="visualizer-header">
+                            <h2>Immersive Visualizer</h2>
+                            <p>Real-time audio frequency analysis using Web Audio API</p>
+                        </div>
+                        <div class="visualizer-canvas-wrapper">
+                            <canvas id="expanded-visualizer"></canvas>
+                            <div class="now-playing-overlay-card">
+                                <img src="" alt="Album Art" id="viz-album-art">
+                                <div class="overlay-track-details">
+                                    <h3 id="viz-track-title">Not Playing</h3>
+                                    <p id="viz-track-artist">Select a song to start</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="visualizer-controls-row">
+                            <button class="btn btn-transparent active-viz-theme" data-theme="neon">Neon Bars</button>
+                            <button class="btn btn-transparent" data-theme="wave">Waveform</button>
+                            <button class="btn btn-transparent" data-theme="circular">Circular Wave</button>
+                            <button class="btn btn-transparent" data-theme="particles">Particles</button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER PLAYER BAR -->
+    <footer class="player-bar">
+        <!-- Track details -->
+        <div class="player-left">
+            <div class="curr-track-img-box">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&auto=format&fit=crop&q=60" alt="Current Album Art" id="player-album-art">
+            </div>
+            <div class="curr-track-details">
+                <div class="curr-track-title-wrapper">
+                    <span class="curr-track-title" id="player-track-title">Select a Song</span>
+                </div>
+                <span class="curr-track-artist" id="player-track-artist">Artist</span>
+            </div>
+            <button class="player-like-btn" id="player-heart" title="Add to Liked Songs">
+                <i class="fa-regular fa-heart"></i>
+            </button>
+        </div>
+
+        <!-- Controls -->
+        <div class="player-middle">
+            <div class="player-controls">
+                <button class="control-btn" id="btn-shuffle" title="Shuffle">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button class="control-btn" id="btn-prev" title="Previous">
+                    <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <button class="control-btn play-btn" id="btn-play-pause" title="Play">
+                    <i class="fa-solid fa-circle-play"></i>
+                </button>
+                <button class="control-btn" id="btn-next" title="Next">
+                    <i class="fa-solid fa-forward-step"></i>
+                </button>
+                <button class="control-btn" id="btn-repeat" title="Repeat">
+                    <i class="fa-solid fa-repeat"></i>
+                </button>
+            </div>
+            <div class="player-progress">
+                <span class="time-stamp" id="time-current">0:00</span>
+                <div class="progress-bar-container">
+                    <input type="range" min="0" max="100" value="0" class="progress-range" id="player-progress-range">
+                    <div class="progress-fill" id="player-progress-fill"></div>
+                </div>
+                <span class="time-stamp" id="time-total">0:00</span>
+            </div>
+        </div>
+
+        <!-- Volume and Utils -->
+        <div class="player-right">
+            <button class="player-util-btn" id="btn-toggle-visualizer" title="Toggle Immersive Visualizer">
+                <i class="fa-solid fa-chart-simple"></i>
+            </button>
+            <div class="volume-container">
+                <button class="player-util-btn" id="btn-volume-icon" title="Mute/Unmute">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <div class="volume-bar-container">
+                    <input type="range" min="0" max="100" value="70" class="volume-range" id="volume-range">
+                    <div class="volume-fill" id="volume-fill" style="width: 70%;"></div>
+                </div>
+            </div>
+            <button class="player-util-btn" id="btn-fullscreen" title="Fullscreen">
+                <i class="fa-solid fa-expand"></i>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Script Source -->
+    <script src="script.js"></script>
+</body>
+</html>
